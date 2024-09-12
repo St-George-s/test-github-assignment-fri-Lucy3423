@@ -28,7 +28,7 @@ def load_data():
     #create acountries list which will store all the info for each country
     countries = []
 
-    with open("olympics2024.csv", "w") as file:
+    with open("olympics2024.csv", "r") as file:
         reader = csv.reader(file) 
 
         for row in reader:
@@ -45,23 +45,20 @@ def load_data():
             )        
 
             countries.append(new_record)
+        file.close()
 
-            # ranks.append(int(row[0]))
-            # countries.append(row[1])
-            # codes.append(row[2])
-            # golds.append(int(row[3]))
-            # silvers.append(int(row[4]))
-            # bronzes.append(int(row[5]))
-            # totals.append(int(row[6]))
     return countries
 
 
-    # return athletes
 
 
 #total medal calculation routine
-def calculate_medal_count(athletes):
-    pass
+def calculate_medal_count(countries):
+    total_medals = 0
+    for country in countries:
+        total_medals += country.total
+    
+    return total_medals
 
 
 #top country indentification routine
@@ -74,3 +71,6 @@ def report_top_gold_medals(athletes):
     pass
 
 # Main
+countries = load_data()
+total = calculate_medal_count(countries)
+print(total)

@@ -30,12 +30,14 @@ def load_data():
 
     with open("olympics2024.csv", "r") as file:
         reader = csv.reader(file) 
+        header = next(reader)
 
         for row in reader:
 
+
             #create a Country instance with all the properties from each row
             new_record = Country(
-            int(row[0]),
+            row[0],
             row[1],
             row[2],
             int(row[3]),
@@ -62,15 +64,43 @@ def calculate_medal_count(countries):
 
 
 #top country indentification routine
-def identify_top_country(athletes):
-    pass
+def identify_top_country(countries):
+    #which country with most medals
+
+    top = countries[0]
+    for country in countries:
+        if country.total > top.total:
+            top = country
+
+    print("Country with most medals: " + str(top.country))
+
+   
 
 
 #gold medal report routine
-def report_top_gold_medals(athletes):
-    pass
+def report_top_gold_medals(countries):
+    print("")
+    print("Countries which have won 30 or more Gold medals")
+    with open("topCountries.txt", "w") as file:
+
+        for country in countries:
+            if country.gold >= 30:
+                file.write(country.country + ": ")
+                file.write(str(country.gold) + "\n")
+                print(country.country + " has won " + str(country.gold) + " Gold medals.")
+
+
+    file.close()
+        
+
+
+
+
+
+
 
 # Main
 countries = load_data()
 total = calculate_medal_count(countries)
-print(total)
+identify_top_country(countries)
+report_top_gold_medals(countries)

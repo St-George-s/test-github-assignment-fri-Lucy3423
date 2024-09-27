@@ -12,3 +12,7 @@ level = input("Input level (Bronze, Silver, Gold): ")
 age = input("Input age: ")
 username = generate_username("Lucy", "Fowler")
 print(username)
+
+name = "lucy"
+name = name[0].upper() + name[1:]
+print(name)

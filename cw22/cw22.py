@@ -126,6 +126,7 @@ def count_sightings(sightings):
 
 
 sightings = load_data()
+print(sightings[0].age)
 oldest_sighter(sightings)
 # display_sighting_dates(sightings)
 count_sightings(sightings)

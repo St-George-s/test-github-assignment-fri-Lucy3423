@@ -23,5 +23,4 @@ cars = [car1, car2]
 #other questions
 
 #2
-class pet_food:
-    def __init__(self, )
+

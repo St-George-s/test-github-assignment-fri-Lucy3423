@@ -66,21 +66,19 @@ def find_max_order_with_tv(orders):
     print(f"Max amount spent on a TV was £{max_order.amount_spent}")
 
 
-#new mthod to determine whether purchase is legitimate for a discount
+#new function to determine whether purchase is legitimate for a discount
 def determine_discount(orders):
 
     #open file to write new info to it
     with open("Discounts.txt", "w") as file:
         for order in orders:
             file.write(str(order.customer_id) + "-")
-            file.write(order.product_purchased[:2] + "-")
+            file.write(order.product_purchased[:3] + "-")
 
             if order.customer_id % 5 == 0:
-                file.write("DISCOUNT CODE ASSIGNED")
-                file.write("\n")
+                file.write("DISCOUNT CODE ASSIGNED \n")
             else:
-                file.write("NO DISCOUNT")
-                file.write("\n")
+                file.write("NO DISCOUNT \n")
             
 
 

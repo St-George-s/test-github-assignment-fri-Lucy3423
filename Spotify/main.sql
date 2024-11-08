@@ -1,3 +1,6 @@
-SELECT * 
+SELECT genre_id, COUNT(*)
 FROM Tracks 
-WHERE duration_ms > 200000;
+GROUP BY genre_id;
+
+SELECT *
+FROM Tracks;

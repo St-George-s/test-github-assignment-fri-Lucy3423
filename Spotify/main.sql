@@ -1,6 +1,12 @@
-SELECT genre_id, COUNT(*)
+SELECT * 
 FROM Tracks 
-GROUP BY genre_id;
+WHERE album_id IN (
+  SELECT album_id 
+  FROM Albums 
+  WHERE release_year > 2018
+ );
 
-SELECT *
-FROM Tracks;
+SELECT T.track_name, A.album_name 
+FROM Tracks T, Albums A
+WHERE T.album_id = A.album_id 
+AND A.release_year > 2020;

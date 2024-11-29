@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 09b5c8d (Mock DB Test)
 SELECT name
@@ -68,3 +69,6 @@ DESCRIBE ALL TABLES;
 >>>>>>> 77a9bcf (Mock DB Test)
 =======
 >>>>>>> 09b5c8d (Mock DB Test)
+=======
+DESCRIBE ALL TABLES;
+>>>>>>> 8a94fa5 (mostly finished 2020, working on 23)

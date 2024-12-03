@@ -2,6 +2,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a887e1a (Mock DB Test)
 
 SELECT Event.eventName AS 'Event Name', Shop.name AS 'Shop Name', Event.maxAttendees AS 'Max Attendees', Event.eventDate AS 'Event Date' 
 FROM Event
@@ -28,6 +31,7 @@ AND OpeningTime.date = '2024-12-24';
 =======
 DESCRIBE ALL TABLES;
 >>>>>>> 6c99ea2 (Mock DB Test)
+<<<<<<< HEAD
 =======
 DESCRIBE ALL TABLES;
 >>>>>>> 6c99ea2 (Mock DB Test)
@@ -36,3 +40,5 @@ DESCRIBE ALL TABLES;
 =======
 DESCRIBE ALL TABLES;
 >>>>>>> 4b1bb92 (Mock DB Test)
+=======
+>>>>>>> a887e1a (Mock DB Test)

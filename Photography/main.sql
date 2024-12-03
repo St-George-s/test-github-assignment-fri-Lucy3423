@@ -1,5 +1,8 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 09b5c8d (Mock DB Test)
 SELECT name
 FROM Clients
 WHERE client_id IN (
@@ -7,6 +10,7 @@ WHERE client_id IN (
     FROM Bookings
     WHERE event_type = 'Wedding'
 );
+<<<<<<< HEAD
 =======
 DESCRIBE ALL TABLES;
 
@@ -62,3 +66,5 @@ WHERE photographer_id IN (
 =======
 DESCRIBE ALL TABLES;
 >>>>>>> 77a9bcf (Mock DB Test)
+=======
+>>>>>>> 09b5c8d (Mock DB Test)

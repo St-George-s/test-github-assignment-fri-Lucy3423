@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 SELECT Event.eventName AS 'Event Name', Shop.name AS 'Shop Name', Event.maxAttendees AS 'Max Attendees', Event.eventDate AS 'Event Date' 
 FROM Event
@@ -32,3 +33,6 @@ DESCRIBE ALL TABLES;
 >>>>>>> 6c99ea2 (Mock DB Test)
 =======
 >>>>>>> a8ee91c (Added Class Test)
+=======
+DESCRIBE ALL TABLES;
+>>>>>>> 4b1bb92 (Mock DB Test)

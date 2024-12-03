@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 SELECT name
 FROM Clients
 WHERE client_id IN (
@@ -58,3 +59,6 @@ WHERE photographer_id IN (
 --     WHERE experience_years > 5
 -- );
 >>>>>>> 92972dc (mostly finished 2020, working on 23)
+=======
+DESCRIBE ALL TABLES;
+>>>>>>> 77a9bcf (Mock DB Test)

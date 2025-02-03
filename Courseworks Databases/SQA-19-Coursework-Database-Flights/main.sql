@@ -29,3 +29,28 @@ GROUP BY c.forename, c.surname
 ORDER BY b.childTicket DESC;
 
 
+
+
+
+
+
+
+
+-- 1
+SELECT C.forename, C.surname, SUM(B.childTicket * 2.00 + B.adultTicket * 5.50 + B.concessionTicket * 1.50) AS 'Tax (£)'
+FROM Customer C
+JOIN Booking B ON C.customerID = B.customerID
+JOIN Flight F ON B.flightID = F.flightID
+WHERE C.customerID = 'GR01932' AND F.flightID = 'QH182';
+
+-- 2
+SELECT C.forename, C.surname
+FROM Customer C
+JOIN Booking B ON C.customerID = B.customerID
+WHERE childTicket
+ = (
+    SELECT MAX(childTicket)
+    FROM Booking 
+ );
+
+-- 3

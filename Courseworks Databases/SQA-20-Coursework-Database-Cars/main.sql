@@ -1,5 +1,81 @@
 DESCRIBE ALL TABLES;
 
+-- a query to calcuate the total earnings across all five garages on 19 January 2020
+
+
+
+SELECT garageName, SUM(cost) AS "Total Sales"
+FROM Garage
+JOIN Job on Garage.garageID = Job.garageID
+WHERE Job.dateOut = "19-Jan-20"
+GROUP BY garageName;
+
+
+-- a query to display details of car with most days in garage
+
+SELECT MAX(dateOut - dateIN) AS "Number of Days", Car.regNo, garageName
+FROM Car
+JOIN Job ON Car.regNo = Job.regNo
+JOIN Garage ON Job.garageID = Garage.garageID
+GROUP BY garageName;
+
+-- SELECT SUM(dateOut - dateIN) AS "Number of Days", Car.regNo, garageName
+-- FROM Car
+-- JOIN Job ON Car.regNo = Job.regNo
+-- JOIN Garage ON Job.garageID = Garage.garageID
+-- GROUP BY garageName
+-- ORDER BY SUM(dateOut - dateIN) DESC
+-- LIMIT BY 1;
+
+-- need to use subquery to obtain the max number of days.
+
+-- testing the following query
+
+SELECT forename, surname, AVG(cost) AS [Average Job Cost]
+FROM Customer, Car, Job
+WHERE Customer.customerID = Car.customerID AND
+ Car.regNo = Job.regNo
+GROUP BY Customer.customerID
+ORDER BY AVG(cost) DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- select the garage name and the total sales
 -- the data to look for is 19-Jan-20
 -- using the Garage and Job databases
@@ -32,9 +108,9 @@ DESCRIBE ALL TABLES;
 
 
 
- SELECT forename, surname, AVG(cost) AS [Average Job Cost] 
- FROM   Customer, Car, Job 
- WHERE  Customer.customerID = Car.customerID AND 
-             Car.regNo = Job.regNo 
- GROUP BY surname, Customer.customerID
- ORDER BY AVG(cost) DESC; 
+--  SELECT forename, surname, AVG(cost) AS [Average Job Cost] 
+--  FROM   Customer, Car, Job 
+--  WHERE  Customer.customerID = Car.customerID AND 
+--              Car.regNo = Job.regNo 
+--  GROUP BY surname, Customer.customerID
+--  ORDER BY AVG(cost) DESC; 

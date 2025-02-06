@@ -1,43 +1,26 @@
 import csv
 
-# parallel arrays
-
-forenames = []
-surnames = []
-categories = []
-passwords = []
-
+# COMMENT
 def check_for_valid_password():
-# initailly valid password has not yet been entered
+    # Initailly valid password has not yet been entered
     valid = False
 
     # continue to input passwrod until it meet the requirements
     while valid == False:
         password = input("Password: ")
-
-        # check against the conditions 
-
-        # first character is capital and last character is a symbol
+        # Check first character is capital and last character is a symbol
         if (ord(password[0]) >= 65 and ord(password[0]) <= 90) and (ord(password[-1]) >= 35 and ord(password[-1]) <= 37):
-
             # if both of these requirement are met, the password is valid
             print("Valid Password Entered")
             valid = True
-        
         else:
             print("Invalid Password, Please Try Again")
-
-        
-        # return valid password at the end of the function
+    # return valid password at the end of the function
     return password
 
-        
 
-
-
-
+# COMMENT
 def get_new_member():
-
     # input new data: first name, last name and category they belong to
     forename = input("First Name: ")
     surname = input("Surname: ")
@@ -48,7 +31,12 @@ def get_new_member():
 
     return forename, surname, category, password
 
+# Comment
 def read_in_data(forename, surname, category, password):
+    forenames = []
+    surnames = []
+    categories = []
+    passwords = []
 
     # read in data from file members.txt and store information in parallel arrays
     with open("members.txt", "r") as file:
@@ -70,13 +58,16 @@ def read_in_data(forename, surname, category, password):
         for index in range(len(forenames)):
             print(f"{forenames[index]} {surnames[index]} {categories[index]}")
     
-    return forenames, surnames, categories, passwords
+    return categories
 
+
+# COMMENT
 def count_number_members_for_each_category(categories):
     number_of_juniors = 0 
     number_of_adults = 0
     number_of_seniors = 0
     total_number_members = 0
+    # Comment to explain logic below
     for category in categories:
         total_number_members += 1
         if category == "Junior":
@@ -93,10 +84,7 @@ def count_number_members_for_each_category(categories):
     print(f"There are currently {str(number_of_seniors)} Senior members")
 
 
-
 # main program
 forename, surname, category, password = get_new_member()
-
-forenames, surnames, categories, passwords = read_in_data(forename, surname, category, password)
-
+categories = read_in_data(forename, surname, category, password)
 count_number_members_for_each_category(categories)

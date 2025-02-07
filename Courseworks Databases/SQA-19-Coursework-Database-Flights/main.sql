@@ -4,7 +4,7 @@ SELECT forename, surname, SUM((Booking.adultTicket * 5.50) + (Booking.childTicke
 FROM Customer
 JOIN Booking On Customer.customerID = Booking.customerID
 JOIN Flight on Booking.flightID = Flight.flightID
-WHERE Customer.customerID = "GR01932" and Flight.flightID = 
+WHERE Customer.customerID = "GR01932" and Flight.flightID = "QH182"
 GROUP BY Customer.customerID;
 
 SELECT forename, surname

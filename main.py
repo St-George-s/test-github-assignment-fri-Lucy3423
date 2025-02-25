@@ -12,9 +12,6 @@ class Order:
         self.rating = rating
 
 
-
-
-
 # A fucntion to read in the data from the text file and store it in an array of records called orders
 def read_in_data():
     # create an array to hold all the orders
@@ -36,7 +33,6 @@ def read_in_data():
             # add new order to the list of orders
             orders.append(new_order)
     return orders
-
 
 
 # identify which customer left the first 5-star rating for a given month - input orders
@@ -84,10 +80,6 @@ def countOption(orders):
     return number_of_delivered_orders, number_of_collected_orders
 
 
-
-
-
-
 # a subroutine to display the total number of orders collected and delivered using the pre-defined sub-routine called countOption
 def display_number_of_orders_delivered_and_collected(orders):
     # 4.1. 4.2 Call countOption function to return the number of orders delievered and collected
@@ -95,9 +87,6 @@ def display_number_of_orders_delivered_and_collected(orders):
     # 4.3 Output results
     print(f"Total number of orders delivered to date: {str(number_of_delivered_orders)}")
     print(f"Total number of orders collected to date: {str(number_of_collected_orders)}")
-
-
-
 
 
 

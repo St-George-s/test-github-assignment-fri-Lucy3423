@@ -27,7 +27,7 @@ class Playlist:
     
     def play_backward(self):
         current = self.tail
-        while current:
+        while current.prev is not None:
             print(f"Now playing {current.title}")
             current = current.prev
 

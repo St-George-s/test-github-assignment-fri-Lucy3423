@@ -6,7 +6,7 @@ battle_grid = [["-", "-", "-", "-", "-"], ["-", "-", "-", "-", "-"], ["-", "-", 
 # function to clearly display the player's grid
 def display_player_grid(player_grid):
     for index in range(5):
-        print(player_grid[index])
+        print(player_grid[index])  
 
 
 def play_game(battle_grid):

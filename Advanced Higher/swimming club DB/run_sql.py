@@ -27,7 +27,7 @@ def main():
         host="127.0.0.1",
         user="student",
         password="studentpw",
-        database="SwimClbuDB",
+        database="SwimClubDB",
         port=3306
     )
     cur = conn.cursor(buffered=True)

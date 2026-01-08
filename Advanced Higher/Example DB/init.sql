@@ -1,24 +1,33 @@
-CREATE DATABASE IF NOT EXISTS project1;
-USE project1;
+-- CREATE DATABASE IF NOT EXISTS project1;
+-- USE project1;
 
--- DDL
-CREATE TABLE IF NOT EXISTS pupils(
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(50) NOT NULL,
-  age INT
-);
+-- -- DDL
+-- CREATE TABLE IF NOT EXISTS pupils(
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   name VARCHAR(50) NOT NULL,
+--   age INT
+-- );
 
-CREATE TABLE IF NOT EXISTS attendance(
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  pupil_id INT NOT NULL,
-  present TINYINT(1) NOT NULL DEFAULT 1
-);
+-- CREATE TABLE IF NOT EXISTS attendance(
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   pupil_id INT NOT NULL,
+--   present TINYINT(1) NOT NULL DEFAULT 1
+-- );
 
--- DML
-INSERT INTO pupils(name, age) VALUES
-('Ada Lovelace', 17),
-('Alan Turing', 18)
-ON DUPLICATE KEY UPDATE name=VALUES(name), age=VALUES(age);
+-- CREATE TABLE IF NOT EXISTS movies(
+--   movieName VARCHAR(100) NOT NULL,
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   genre VARCHAR(20) NOT NULL
+-- );
 
-INSERT INTO attendance(pupil_id, present) VALUES (1,1)
-ON DUPLICATE KEY UPDATE present=VALUES(present);
+
+-- INSERT INTO movies(movieName, genre) VALUES ('Frozen', "comedy");
+-- INSERT INTO movies(movieName,genre) VALUES ('Nemo', 'comedy');
+-- -- DML
+-- INSERT INTO pupils(name, age) VALUES
+-- ('Ada Lovelace', 17),
+-- ('Alan Turing', 18)
+-- ON DUPLICATE KEY UPDATE name=VALUES(name), age=VALUES(age);
+
+-- INSERT INTO attendance(pupil_id, present) VALUES (1,1)
+-- ON DUPLICATE KEY UPDATE present=VALUES(present);

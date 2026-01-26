@@ -20,41 +20,25 @@ def open_db():
 
 def display_menu():
     print("""Movie recommendation service
-          [1] Display all movie names
-          [2] Display all genres
-          [3] Exit program""")
+          [1] Add movie to watched movies list
+          [2] Request recommendations
+          [3] View watched movies list
+          [4] End program""")
 
 def get_menu_choice():
     while True: 
-        choice = input('Enter service (1-3): ')
-        if int(choice) <= 3 and int(choice) > 0:
+        choice = input('Enter service (1-4): ')
+        if int(choice) <= 4 and int(choice) > 0:
             break 
     return choice
 
-def display_movie_names(cur):
-    sql = """
-    SELECT movieName FROM movies;    
-    """
-    cur.execute(sql)
-    rows = cur.fetchall()
+# End User 1: add movie to watched movies list
+def update_watched_movies(user:User):
+    user.update_watched_movies_list()
+    return user
 
-    print("")
-    print('Fetching all movie names \n')
-    for movieName in rows:
-        print(f"Movie: {movieName}")
 
-def display_movie_genres(cur):
-    sql = """
-    SELECT genre FROM movies;
-"""
-    cur.execute(sql)
-    rows = cur.fetchall()
 
-    print("")
-    print("Fetching all genres")
-
-    for genre in rows:
-        print(f"Genre: {genre}")
 
 def main():
     con,cur = open_db()
@@ -63,12 +47,16 @@ def main():
     while True:
         display_menu()
         choice = get_menu_choice()
-        if choice == '1':
-            display_movie_names(cur)
-        elif choice == '2':
-            display_movie_genres(cur)
+        if choice == "1":
+            update_watched_movies(user)
+            for movie in user.watched_movies:
+                print(f"""
+name: {movie.name}
+genre: {movie.genre}
+director: {movie.director}
+rating: {str(movie.rating)}
+""")
         else:
-            print("Bye")
             break
         
 

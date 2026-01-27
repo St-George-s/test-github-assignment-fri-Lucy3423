@@ -14,6 +14,9 @@ cur = conn.cursor()
 cur.execute("INSERT INTO pupils(name, age) VALUES (%s, %s)", ("Grace Hopper", 19))
 conn.commit()
 
+cur.execute("SELECT id FROM pupils WHERE name = %s",  ("Grace Hopper"))
+
+
 # (3) DISPLAY (SELECT + basic formatting)
 cur.execute("""
 SELECT p.id, p.name, p.age, COALESCE(a.present, 0) AS present

@@ -16,8 +16,8 @@ class User:
 
         # !!!!!
         # no current implementation of db - not final implementation
-        self.watched_movies.append(Movie(name, 'fantasy', "Tim Burton", rating))
-        return self
+        # self.watched_movies.append(Movie(name, 'fantasy', "Tim Burton", rating))
+        return name, rating
         
 
         
@@ -35,8 +35,8 @@ class User:
     def input_movie_rating(self):
         rating = int(input("How would you rate the film (1-5): "))
         # FR14 - check the rating is within the correct range
-        while rating < 1 or rating > 5 or str(rating) == "":
+        while int(rating) < 1 or int(rating) > 5:                           
             rating = int(input("How would you rate this film (1-5): "))
-        
+            # error here when checking for the presence of data
         return rating
 

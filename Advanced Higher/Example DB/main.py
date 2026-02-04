@@ -34,26 +34,27 @@ def get_menu_choice():
             choice = input("Enter service (1-4): ")
     return choice
 
-# End User 1: add movie to watched movies list
-def update_watched_movies(user:User, cur):
-    new_movie_name, rating = user.update_watched_movies_list()
-    new_movie_name = new_movie_name.title()
 
-    # check the movie is not already recorded before progressing
-    director, genre = retrieve_movie_details(cur, new_movie_name, rating)
-    user.watched_movies.append(Movie(new_movie_name, genre, director, rating))
-    return user
+# def retrieve_movie_details(cur, movieName):
+#     print(movieName)
+#     sql = """SELECT director, genre FROM movies WHERE movieName = %s;"""
+#     cur.execute(sql, (movieName,))
+#     rows = cur.fetchall()
 
-def retrieve_movie_details(cur, movieName, rating):
-    print(movieName)
-    sql = """SELECT director, genre FROM movies WHERE movieName = %s;"""
-    cur.execute(sql, (movieName,))
-    rows = cur.fetchall()
+#     print("")
+#     print('Fetching movie data \n')
+#     # ERROR
+#     for director, genre in rows:
+#         if director == "" or genre == "":
+#             found = False
+            
 
-    print("")
-    print('Fetching movie data \n')
-    for director, genre in rows:
-        return director, genre
+    # if rows == []:
+        
+    # else:
+    #     for director, genre in rows:
+    #         return director, genre
+    
 
 
 def main():
@@ -64,16 +65,8 @@ def main():
         display_menu()
         choice = get_menu_choice()
         if choice == "1":
-            update_watched_movies(user, cur)
-            print("New movie added \n")
+            user.update_watched_movies_list(cur)
             
-            for movie in user.watched_movies:
-                print(f"name: {movie.name}")
-                print(f"genre: {movie.genre}")
-                print(f"director: {movie.director}")
-                print(f"rating: {str(movie.rating)}")
-        else:
-            break
         
 
 
@@ -81,4 +74,3 @@ if __name__ == '__main__':
     main()
 user = User()
 con,cur = open_db()
-update_watched_movies(user, cur)

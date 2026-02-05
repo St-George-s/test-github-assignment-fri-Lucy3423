@@ -26,35 +26,12 @@ def display_menu():
 [4] End program""")
 
 def get_menu_choice():
-    while True: 
-        choice = input('Enter service (1-4): ')
-        if int(choice) <= 4 and int(choice) > 0:
-            break
-        else:
-            choice = input("Enter service (1-4): ")
+    choice = input("Enter service (1-4): ")
+    while len(choice) != 1 or int(choice) < 1 or int(choice) > 4:
+        print("Invalid input") 
+        print("Choice must be between (1-4)")
+        choice = input("Enter service (1-4): ")
     return choice
-
-
-# def retrieve_movie_details(cur, movieName):
-#     print(movieName)
-#     sql = """SELECT director, genre FROM movies WHERE movieName = %s;"""
-#     cur.execute(sql, (movieName,))
-#     rows = cur.fetchall()
-
-#     print("")
-#     print('Fetching movie data \n')
-#     # ERROR
-#     for director, genre in rows:
-#         if director == "" or genre == "":
-#             found = False
-            
-
-    # if rows == []:
-        
-    # else:
-    #     for director, genre in rows:
-    #         return director, genre
-    
 
 
 def main():
@@ -64,9 +41,31 @@ def main():
     while True:
         display_menu()
         choice = get_menu_choice()
+        # EU1 - add movie to watched movies list
         if choice == "1":
             user.update_watched_movies_list(cur)
-            
+        elif choice == "2":
+            print("Sorting list")
+            user.view_watched_movies()    
+        elif choice == "3":
+            print("option 3")
+        else:
+            print("Byeee")
+            break
+
+# bubble sort
+def bubble_sort(list):
+    n = len(list)
+    swapped = True 
+    
+    while swapped:
+        swapped = False
+        for i in range(n-1):
+            if list[i] > list[i+1]:
+                list[i], list[i+1] = list[i+1], list[i]
+                swapped = True 
+        
+        n -= 1
         
 
 

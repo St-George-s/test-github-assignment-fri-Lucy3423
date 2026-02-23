@@ -12,8 +12,6 @@ class User:
     def update_watched_movies_list(self, cur):
         # input the name of the movie to be added
         name = self.input_movie_name()
-        # capatalise the name of the movie
-        name = name.title()
         # input the rating for that movie
         rating = self.input_movie_rating()
 
@@ -38,7 +36,7 @@ Rating: {str(rating)}""")
             else:
                 print("Unable to find movie")
         else:
-            print(f"{name} has already been recorded in your watched movies list")    
+            print(f"{name} has already been recorded in your watched movies list \n")    
 
     
     # method to input the movie name to be added and check for the prescence of text
@@ -48,6 +46,8 @@ Rating: {str(rating)}""")
         while movieName == "":
             movieName = input("Movie name:")
         
+        movieName.title()
+        movieName.strip()
         return movieName
 
 
@@ -68,13 +68,6 @@ Rating: {str(rating)}""")
         rows = cur.fetchall()
 
         print("")
-        # ERROR
-        # for director, genre in rows:
-        #     if director == "" or genre == "":
-        #         found = False
-        #     else:
-        #         found = True 
-        # print()
         if len(rows) > 0:
             found = True
             for director, genre in rows:
@@ -98,7 +91,6 @@ Rating: {str(rating)}""")
 
     # a method to apply a bubble sort to the user's watched movies list
     # FR3
-    # LOGIC - I'm not sure if this is the right algorithm to use for descending order, but it does work
     def bubble_sort(self):
         # find len of list
         n = len(self.watched_movies)
@@ -123,20 +115,137 @@ Rating: {str(rating)}""")
     
     # FR10 
     def view_watched_movies(self):
-        # first order the movies using FR3
-        self.bubble_sort
-        for movie in self.watched_movies:
-            print(f"""
-Name: {movie.name}
-Director: {movie.director}
-Genre: {movie.genre}
-Rating: {int(movie.rating)}""")
+        # first check whether any movies have been recorded yet
+        if self.watched_movies:
+            print("Order movies by highest rating \n")
+            # order the movies using FR3 for descending order
+            self.bubble_sort()
+            for movie in self.watched_movies:
+                print(
+    f"""Name: {movie.name}
+    Director: {movie.director}
+    Genre: {movie.genre}
+    Rating: {int(movie.rating)}
+    """)
+        # if there are no movies recorded
+        else:
+            print("No movies have been recorded yet")
 
-    
 
-                
 
+    # EU2 - recommend movies
+    def recommend_movies(self, cur):
+        # check whether any movies have been recorded yet
+        if len(self.watched_movies) == 0:
+            print("You have not recorded any movies yet. At least one is required to request a recommendation")
+            request_available = False 
+
+        elif len(self.watched_movies) <= 5:
+            # apply bubble sort
+            self.bubble_sort()
+            request_available = True 
+            top_movies = self.watched_movies
+        else:
+            # assume that there are more than 5 movies recorded
+            # apply the bubble sort
+            self.bubble_sort()
+            # limit the list to the top 5 results
+            top_movies = self.watched_movies[:5]
+            request_available = True
         
+        # check whether the program is able to recommend the user movies
+        if request_available:
+            # 1 identify the most popular genre
+            top_genre = self.identify_top_genre(top_movies)
+            top_director = self.identify_top_director(top_movies)
+            # 2 call the methods for the queries 
+            self.display_genre_movies(top_genre, cur)
+            self.display_director_movies(top_director, cur)
+            print("")
+
+    def identify_top_genre(self, top_movies):
+        # define an empty dictionary: genre_name : genre_count
+        genres = {}
+
+        # iterate through the top_movies
+        for movie in top_movies:
+            # check whether the current genre has already been recorded in the dictionary
+            if movie.genre not in genres:
+                # add the genre as a new key, with value initially set to 1
+                genres[movie.genre] = 1
+            # if it has already been recorded, increment the count instead
+            else:
+                genres[movie.genre] += 1
+        
+        # now all the values are stored in the dictionary, identify genre with highest count
+        top_genre_name = ""
+        top_genre_count = 0
+
+        # iterate through dictionary
+        for key, value in genres.items():
+            # if the current genre occurs more than the current top_genre, replace top_genre details 
+            if value > top_genre_count:
+                top_genre_name = key 
+                top_genre_count = value 
+        
+        # print the results to check 
+        # print(f"Most popular genre: {top_genre_name}")
+        # print(f"Occured {top_genre_count}")
+
+        return top_genre_name
+
+    def identify_top_director(self, top_movies):
+        # define an empty dictionary: genre_name : genre_count
+        directors = {}
+
+        # iterate through the top_movies
+        for movie in top_movies:
+            # check whether the current genre has already been recorded in the dictionary
+            if movie.director not in directors:
+                # add the genre as a new key, with value initially set to 1
+                directors[movie.director] = 1
+            # if it has already been recorded, increment the count instead
+            else:
+                directors[movie.director] += 1
+        
+        # now all the values are stored in the dictionary, identify genre with highest count
+        top_director_name = ""
+        top_director_count = 0
+
+        # iterate through dictionary
+        for key, value in directors.items():
+            # if the current genre occurs more than the current top_genre, replace top_genre details 
+            if value > top_director_count:
+                top_director_name = key 
+                top_director_count = value 
+        
+        # print the results to check 
+        # print(f"Most popular genre: {top_director_name}")
+        # print(f"Occured {top_director_count}")
+        return top_director_name
+
+    def display_genre_movies(self, top_genre, cur):
+        print("")
+        print(f"Searching for movie with your top genre: {top_genre}")
+        sql = """SELECT movieName, director, genre FROM movies WHERE genre LIKE %s LIMIT 5;"""
+        cur.execute(sql, (top_genre,))
+        rows = cur.fetchall()
+
+        print("Why not try...")
+        for movieName, director, genre in rows:
+            print(f"Name: {movieName}, Director: {director}, Genre: {genre}")
+
+    def display_director_movies(self, top_director, cur):
+        print("")
+        print(f"Searching for movies by your top director: {top_director}")
+        sql = """SELECT movieName, director, genre FROM movies WHERE director LIKE %s LIMIT 5;"""
+        cur.execute(sql, (top_director,))
+        rows = cur.fetchall()
+
+        print("Why not try...")
+        for movieName, director, genre in rows:
+            print(f"Name: {movieName}, Director: {director}, Genre: {genre}")
+
             
 
 

@@ -21,8 +21,8 @@ def open_db():
 def display_menu():
     print("""Movie recommendation service
 [1] Add movie to watched movies list
-[2] Request recommendations
-[3] View watched movies list
+[2] View watched movies list
+[3] Request recommendations
 [4] End program""")
 
 def get_menu_choice():
@@ -48,24 +48,10 @@ def main():
             print("Sorting list")
             user.view_watched_movies()    
         elif choice == "3":
-            print("option 3")
+            user.recommend_movies(cur)
         else:
             print("Byeee")
             break
-
-# bubble sort
-def bubble_sort(list):
-    n = len(list)
-    swapped = True 
-    
-    while swapped:
-        swapped = False
-        for i in range(n-1):
-            if list[i] > list[i+1]:
-                list[i], list[i+1] = list[i+1], list[i]
-                swapped = True 
-        
-        n -= 1
         
 
 

@@ -1,80 +1,97 @@
-#for x in range(1000000):
-    #print(str(x) + " x " + str(13.5) + " = " + str(x * 13.5))
+import csv
+
+# set up a class called Order to store the different attributes of each order
+
+class Order:
+    def __init__(self, order_num, date, email, option, cost, rating):
+        self.order_num = order_num
+        self.date = date
+        self.email = email
+        self.option = option
+        self.cost = cost
+        self.rating = rating
 
 
-def get_destination():
-    travel_destination = input("Enter your travel destination (type 'END' to stop): ")
-    return travel_destination
+# A fucntion to read in the data from the text file and store it in an array of records called orders
+def read_in_data():
+    # create an array to hold all the orders
+    orders = []
+    # open up the file
+    with open("orders.txt", "r") as file:
+        reader = csv.reader(file)
+        # iterate over each row
+        for row in reader:
+            # create a new order object using the information on each line
+            new_order = Order(
+                row[0], #orderNum 
+                row[1], #date
+                row[2], #email
+                row[3], #option
+                float(row[4]), #cost
+                int(row[5])  #rating
+            )
+            # add new order to the list of orders
+            orders.append(new_order)
+    return orders
 
 
-# destination = get_destination()
-
-def get_number_people():
-    number_people = int(input("Enter how many poeple are coming: "))
-    return number_people
-
-
-# number_people = get_number_people()
-
-def get_travel_method():
-    travel_method = input("Enter your mode of transport: ")
-    return travel_method
-
-
-# travel_method = get_travel_method()
-
-def print_all_trips(destinations, poeple_counts, travel_methods):
-    for destination in destinations:
-        for number_people in poeple_counts:
-            for travel_method in travel_methods:
-                print(f"""Destination: {destination}
-Number of Poeple: {number_people}
-Mode of Transport: {travel_method}""")
-    
-
-def check_if_local_destination(destination):
-    is_local = False
-    local_destinations = ["Edinburgh", "Glasgow", "Dundee", "Aberdeen"]
-
-    for local_destination in local_destinations:
-        if local_destination == destination:
-            is_local = True
-    
-    if is_local == False:
-        travel_method = get_travel_method()
-    else:
-        travel_method = "Local Transport"
-    
-    return travel_method
+# identify which customer left the first 5-star rating for a given month - input orders
+def identify_first_5_star_rating(orders):
+    position = -1
+    index = 0
+    # 2.3 Ask user to enter month to search for
+    chosen_month = input("Enter the first three letters of the month to serach: ")
+    # until winning customer has been identified, iterate over each record
+    while (position == -1) and (index < len(orders)):
+        if (orders[index].date[3:6] == chosen_month) and (orders[index].rating == 5):
+            position = index
+        else:
+            index += 1
+    return position
 
 
 
-def plan_a_trip():
-    destination = get_destination()
 
-    #define lists
-    destinations = []
-    people_counts = []
-    travel_methods = []
-    while destination != "END":
-        number_people = get_number_people()
-
-        #check if local destination
-        travel_method = check_if_local_destination(destination)
-
-        #add values to lists
-        destinations.append(destination)
-        people_counts.append(number_people)
-        travel_methods.append(travel_method)
-
-        #input whether user wants to append another trip
-        destination = get_destination()
+# create a function to write the details of the winning customer to a text file called 'winningCustomer.txt' - input orders
+def write_winner_to_file(orders, position):
+    # 3.1 Open new file ‘winningCustomer.txt’
+    with open("winningCustomer.txt", "w") as file:
+        if position >= 0:
+            # 3.3 Write winning order number, email and cost to ‘winningCustomer.txt’
+            file.write(orders[position].order_num + ", ")
+            file.write(orders[position].email + ", ")
+            file.write(str(orders[position].cost))
+        else:
+            # 3.5 if no winner has been identified,
+            file.write("No winner")
 
 
-        #print overall travel details/info
-        travel_details = print_all_trips(destinations, people_counts, travel_methods)
+# a subroutine to count the number of orders delivered and collected 
+def countOption(orders):
+    # define variables to hold the number of each order category. They should both initially be set to 0
+    number_of_delivered_orders = 0
+    number_of_collected_orders = 0
+    # interate over each record to count number of orders delivered and collected
+    for order in orders:
+        if order.option == "Delivery":
+            number_of_delivered_orders += 1
+        else:
+            number_of_collected_orders +=1
+    return number_of_delivered_orders, number_of_collected_orders
 
 
-start_trip = plan_a_trip()
+# a subroutine to display the total number of orders collected and delivered using the pre-defined sub-routine called countOption
+def display_number_of_orders_delivered_and_collected(orders):
+    # 4.1. 4.2 Call countOption function to return the number of orders delievered and collected
+    number_of_delivered_orders, number_of_collected_orders = countOption(orders)
+    # 4.3 Output results
+    print(f"Total number of orders delivered to date: {str(number_of_delivered_orders)}")
+    print(f"Total number of orders collected to date: {str(number_of_collected_orders)}")
 
-# trip_info = print_travel_details(destination, number_people, travel_method)
+
+
+# MAIN PROGRAM
+orders = read_in_data()
+position = identify_first_5_star_rating(orders)
+write_winner_to_file(orders, position)
+display_number_of_orders_delivered_and_collected(orders)

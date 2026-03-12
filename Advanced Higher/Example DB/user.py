@@ -5,6 +5,8 @@ class User:
     def __init__(self):
         # FR2 array of objects to store details about mulitples films watched by the user. 
         self.watched_movies:Movie = []
+        self.genres = ["comedy", "romance", "action", "sci-fi", "horror", "drama", "animation", "thriller", "musical", "fantasy"]
+        self.genres_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
 
     # FR11 - a method to add a movie to the watched list
@@ -12,9 +14,8 @@ class User:
         name = self.input_movie_name()
         rating = self.input_movie_rating()
 
-        # retrieve information on the film from the table
+        # FR6- retrieve information on the movie from the table
         found, director, genre = self.retrieve_movie_details(cur, name)
-
 
         not_recorded = self.check_presence_of_movie(name)
 
@@ -29,13 +30,28 @@ Name {name}
 Director: {director}
 Genre: {genre}
 Rating: {str(rating)}""")
+                
+
+
+                # NEW!!!!!!
+                
+                # find the index for the genre
+                # iterate over each genre in self.genres
+                for index in range(len(self.genres)):
+                    # if current genre matches genre of new movie
+                    if self.genres[index] == genre:
+                        # increase the count for that genre in self.genre_count
+                        self.genres_count[index] += 1
+
             else:
                 print("Unable to find movie")
         else:
-            print(f"{name} has already been recorded in your watched movies list \n")    
+            print(f"{name} has already been recorded in your watched movies list \n")  
+
+        return self
 
     
-    # method to input the movie name to be added and check for the prescence of text
+    # FR9 - method to input the movie name to be added and check for the prescence of text
     def input_movie_name(self):
         movieName = input("Movie name: ")
         # FR9 - keyboard validation to check that the user has entered a movie name
@@ -46,23 +62,25 @@ Rating: {str(rating)}""")
         movieName.strip()
         return movieName
 
+# ERROR!
 
-    # method to input the movie rating
+
+    # FR14 - method to input and validate the user's movie rating
     def input_movie_rating(self):
         rating = input("How would you rate the film (1-5): ")
         # FR14 - check the rating is within the correct range
-        while len(rating)!=1 or int(rating) < 1 or int(rating) > 5:                           
-            rating = int(input("How would you rate this film (1-5): "))
+        while len(rating.strip()) != 1 or int(rating) < 1 or int(rating) > 5:        
+            rating = input("How would you rate this film (1-5): ")
         return rating
 
-
+    # FR6 - a query to retrieve the director and genre of a given movie
     def retrieve_movie_details(self, cur, movieName):
-        print(movieName)
         sql = """SELECT director, genre FROM movies WHERE movieName = %s;"""
         cur.execute(sql, (movieName,))
         rows = cur.fetchall()
 
         print("")
+        # FR7 - a check to ensure that the movie exists in the Movie table
         if len(rows) > 0:
             found = True
             for director, genre in rows:
@@ -72,7 +90,7 @@ Rating: {str(rating)}""")
             return found, "", ""
     
 
-    # a method to check whether movie to add has already been recorded in the user's watched movies list
+    # FR18 - a method to check whether movie to add has already been recorded in the user's watched movies list
     def check_presence_of_movie(self, movieName):
         not_recorded = True
         for movie in self.watched_movies:
@@ -98,7 +116,8 @@ Rating: {str(rating)}""")
             for i in range(n-1):
                 # check whether current element is less than next one
                 if self.watched_movies[i].rating < self.watched_movies[i+1].rating:
-                    # FR4 - if so, swap those elements. This will change the order of the movies in the user's watched movies so that they are ordered by highest rating rather than most recent addition
+                    # FR4 - if so, swap those elements. This will change the order of the movies in the user's watched 
+                    # movies so that they are ordered by highest rating rather than most recent addition
                     self.watched_movies[i], self.watched_movies[i+1] =  self.watched_movies[i+1], self.watched_movies[i]
                     # swap has happened, so additional swap may be required. reset swapped to true
                     swapped = True 
@@ -110,50 +129,77 @@ Rating: {str(rating)}""")
     def view_watched_movies(self):
         # first check whether any movies have been recorded yet
         if self.watched_movies:
-            print("Order movies by highest rating \n")
+            print("Ordering movies by highest rating \n")
             # order the movies using FR3 for descending order
             self.bubble_sort()
             for movie in self.watched_movies:
                 print(
     f"""Name: {movie.name}
-    Director: {movie.director}
-    Genre: {movie.genre}
-    Rating: {int(movie.rating)}
+Director: {movie.director}
+Genre: {movie.genre}
+Rating: {int(movie.rating)}
     """)
         # if there are no movies recorded
         else:
             print("No movies have been recorded yet")
 
 
-    # FR12 - a method to recommend the user more movies based on the most commonly occuring director and genre in their watched movies list
-    def recommend_movies(self, cur):
-        # check whether any movies have been recorded yet
-        if len(self.watched_movies) == 0:
-            print("You have not recorded any movies yet. At least one is required to request a recommendation")
-            request_available = False 
 
-        elif len(self.watched_movies) <= 5:
-            # apply bubble sort
-            self.bubble_sort()
-            request_available = True 
-            top_movies = self.watched_movies
+    # FR12 - a methoed to recommend the user moves based on their top director
+    def recommend_movies(self, cur):
+        # FR15 - a validation to check that at least one movie has been recorded before recommending a movie
+        if len(self.watched_movies) == 0:
+            movies_recorded = False
         else:
+            movies_recorded = True
+        
+        if movies_recorded:
+            # iterate over self.genres_count to identify top genre
+            top_genre = "" 
+            top_genre_count = 0
+
+            for index in range(len(self.genres)):
+                if self.genres_count[index] > top_genre_count:
+                    top_genre = self.genres[index]
+                    top_genre_count = self.genres_count[index]
+            
+            # call FR16 to display movies with the user's top genre
+            self.display_genre_movies(top_genre, cur)
+            
+ 
+            
+
+
+
+    # FR12 - a method to recommend the user more movies based on the most commonly occuring director and genre in their watched movies list
+    # def recommend_movies_old(self, cur):
+        # FR15 - a validation to check whether any movies have been recorded yet and return an error when this condition has not been met
+        # if len(self.watched_movies) == 0:
+        #     print("You have not recorded any movies yet. At least one is required to request a recommendation")
+        #     request_available = False 
+
+        # elif len(self.watched_movies) <= 5:
+        #     # apply bubble sort
+        #     self.bubble_sort()
+        #     request_available = True 
+        #     top_movies = self.watched_movies
+        # else:
             # assume that there are more than 5 movies recorded
             # apply the bubble sort
-            self.bubble_sort()
-            # limit the list to the top 5 results
-            top_movies = self.watched_movies[:5]
-            request_available = True
+        #     self.bubble_sort()
+        #     # limit the list to the top 5 results
+        #     top_movies = self.watched_movies[:5]
+        #     request_available = True
         
-        # check whether the program is able to recommend the user movies
-        if request_available:
-            # 1 identify the most popular genre
-            top_genre = self.identify_top_genre(top_movies)
-            top_director = self.identify_top_director(top_movies)
-            # 2 call the methods for the queries 
-            self.display_genre_movies(top_genre, cur)
-            self.display_director_movies(top_director, cur)
-            print("") # this is just a line break
+        # # check whether the program is able to recommend the user movies based on the results from FR15
+        # if request_available:
+        #     # 1 identify the most popular genre
+        #     top_genre = self.identify_top_genre(top_movies)
+        #     top_director = self.identify_top_director(top_movies)
+        #     # 2 call the methods for the queries 
+        #     self.display_genre_movies(top_genre, cur)
+        #     self.display_director_movies(top_director, cur)
+        #     print("") # this is just a line break
 
     # A method to loop through the user's watched movies and identify the most popular genre using dictionaries to count each genre occurence
     def identify_top_genre(self, top_movies):
@@ -208,11 +254,10 @@ Rating: {str(rating)}""")
             if value > top_director_count:
                 top_director_name = key 
                 top_director_count = value 
-        
         return top_director_name
 
     # FR16 - a method to perform a query to display movies from the database which have the same genre as the user's top genre
-    def display_genre_movies(self, top_genre, cur):
+    def                               display_genre_movies(self, top_genre, cur):
         print("")
         print(f"Searching for movie with your top genre: {top_genre}")
         sql = """SELECT movieName, director, genre FROM movies WHERE genre LIKE %s LIMIT 5;"""
@@ -221,7 +266,10 @@ Rating: {str(rating)}""")
 
         print("Why not try...")
         for movieName, director, genre in rows:
-            print(f"Name: {movieName}, Director: {director}, Genre: {genre}")
+            print(f"""
+Name: {movieName}
+Director: {director}
+Genre: {genre}""")
 
     # FR17 - a method to perform a query to search for movies with the same director as the user's most popular director
     def display_director_movies(self, top_director, cur):
@@ -233,7 +281,10 @@ Rating: {str(rating)}""")
 
         print("Why not try...")
         for movieName, director, genre in rows:
-            print(f"Name: {movieName}, Director: {director}, Genre: {genre}")
+            print(f"""
+Name: {movieName}
+Director: {director}
+Genre: {genre}""")
 
             
 

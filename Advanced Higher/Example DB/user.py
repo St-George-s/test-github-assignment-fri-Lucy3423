@@ -29,12 +29,7 @@ class User:
 Name {name}
 Director: {director}
 Genre: {genre}
-Rating: {str(rating)}""")
-                
-
-
-                # NEW!!!!!!
-                
+Rating: {str(rating)}""")           
                 # find the index for the genre
                 # iterate over each genre in self.genres
                 for index in range(len(self.genres)):
@@ -145,7 +140,7 @@ Rating: {int(movie.rating)}
 
 
 
-    # FR12 - a methoed to recommend the user moves based on their top director
+    # FR12 - a methoed to recommend the user moves based on their top genre
     def recommend_movies(self, cur):
         # FR15 - a validation to check that at least one movie has been recorded before recommending a movie
         if len(self.watched_movies) == 0:
@@ -257,7 +252,7 @@ Rating: {int(movie.rating)}
         return top_director_name
 
     # FR16 - a method to perform a query to display movies from the database which have the same genre as the user's top genre
-    def                               display_genre_movies(self, top_genre, cur):
+    def display_genre_movies(self, top_genre, cur):
         print("")
         print(f"Searching for movie with your top genre: {top_genre}")
         sql = """SELECT movieName, director, genre FROM movies WHERE genre LIKE %s LIMIT 5;"""
